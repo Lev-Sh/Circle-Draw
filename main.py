@@ -1,15 +1,14 @@
 import sys
-import io
 import random
-from PyQt5 import QtGui, uic, QtCore, QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPainter, QColor
+from UI import Ui_MainWindow
 
-class CircleDraw(QMainWindow):
+class CircleDraw(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        f = io.FileIO('UI.ui')
-        uic.loadUi(f, self) 
+        self.setupUi(self)
         self.pushButton.clicked.connect(self.go)
         self.ispaint = False
 
@@ -18,10 +17,12 @@ class CircleDraw(QMainWindow):
         self.update()
 
     def Draw(self, qp: QPainter):
-        color = QColor(255, 255, 0)
+        color = QColor(random.randint(0, 255),
+                        random.randint(0, 255), 
+                        random.randint(0, 255))
         radius = random.randint(10, min(self.width(), self.height()) // 2 - 10)
-        xPos = random.randrange(radius, self.width() - radius)
-        yPos = random.randrange(radius, self.height() - radius)
+        xPos = random.randrange(0, self.width() - radius)
+        yPos = random.randrange(0, self.height() - radius)
         qp.setBrush(color)
         qp.drawEllipse(xPos, yPos, radius, radius)
 
